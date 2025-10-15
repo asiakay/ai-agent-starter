@@ -4,7 +4,9 @@
   "main": "worker/index.js",
   "scripts": {
     "dev": "wrangler dev",
-    "deploy": "wrangler publish"
+    "deploy": "wrangler publish",
+    "test": "echo 'No automated tests configured.'",
+    "codex-agent": "echo 'Codex agent task runner placeholder.'"
   },
   "dependencies": {}
 }
