@@ -30,12 +30,14 @@ export default {
         }
 
         try {
-          const { results } = await env.AGENT_DB.prepare(
-            `SELECT id, type, topic, output, created_at
-             FROM task_log
-             ORDER BY created_at DESC
-             LIMIT 50`
-          ).all();
+          const query = [
+            'SELECT id, type, topic, output, created_at',
+            'FROM task_log',
+            'ORDER BY created_at DESC',
+            'LIMIT 50'
+          ].join('\n');
+
+          const { results } = await env.AGENT_DB.prepare(query).all();
 
           return Response.json(results ?? []);
         } catch (error) {
