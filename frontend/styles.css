@@ -1,4 +1,79 @@
-body { font-family: sans-serif; padding: 2em; background: #f4f4f4; }
-h1 { color: #333; }
-button { margin: 0.5em; padding: 0.7em 1em; cursor: pointer; }
-pre { background: #fff; padding: 1em; border-radius: 4px; }
+body {
+  font-family: Arial, sans-serif;
+  padding: 2rem;
+  background: #f4f4f4;
+  color: #333;
+}
+
+h1 {
+  margin-bottom: 1.5rem;
+}
+
+button {
+  margin-right: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #4caf50;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+button:hover {
+  background-color: #43a047;
+}
+
+pre {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  margin-top: 1.5rem;
+  min-height: 4rem;
+}
+
+#logs {
+  margin-top: 2.5rem;
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.logs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+#logs table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+#logs th,
+#logs td {
+  text-align: left;
+  padding: 0.75rem;
+  border-bottom: 1px solid #e5e5e5;
+  word-break: break-word;
+}
+
+#logs tbody tr:nth-child(odd) {
+  background: #fafafa;
+}
+
+#logs tbody tr:hover {
+  background: #f0f7ff;
+}
+
+#logs .empty,
+#logs .error {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+}
