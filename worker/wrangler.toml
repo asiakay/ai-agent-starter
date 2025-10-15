@@ -1,0 +1,16 @@
+name = "ai-agent"
+main = "worker/index.js"
+compatibility_date = "2025-01-01"
+
+[vars]
+OPENAI_API_KEY = "your-key"
+
+[kv_namespaces]
+  [kv_namespaces.prompt_cache]
+  binding = "PROMPTS"
+  id = "your-kv-id"
+
+[[d1_databases]]
+binding = "AGENT_DB"
+database_name = "agent-d1"
+database_id = "your-d1-id"

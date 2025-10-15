@@ -1,0 +1,1 @@
+console.log('Daily research cron job running...');
