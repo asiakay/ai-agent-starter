@@ -10,6 +10,28 @@
   <button onclick="runTask('generate')">Generate Content</button>
   <button onclick="runTask('optimize')">Optimize Workflow</button>
   <pre id="output"></pre>
+  <section id="logs">
+    <div class="logs-header">
+      <h2>Recent Task Logs</h2>
+      <button id="refresh-logs">Refresh Logs</button>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Type</th>
+          <th>Topic/Project</th>
+          <th>Output</th>
+          <th>Created</th>
+        </tr>
+      </thead>
+      <tbody id="log-rows">
+        <tr>
+          <td colspan="5" class="empty">No logs yet.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
   <script src="script.js"></script>
 </body>
 </html>

@@ -5,12 +5,44 @@ import { engineer } from './agents/engineer.js';
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    const path = url.pathname;
+    const { pathname, searchParams } = url;
 
-    if (path.startsWith("/research")) return scout(url.searchParams.get("topic"), env);
-    if (path.startsWith("/generate")) return scribe(url.searchParams.get("topic"), env);
-    if (path.startsWith("/optimize")) return engineer(url.searchParams.get("project"), env);
+    switch (pathname) {
+      case '/research':
+        return scout(searchParams.get('topic'), env);
+      case '/generate':
+        return scribe(searchParams.get('topic'), env);
+      case '/optimize':
+        return engineer(searchParams.get('project'), env);
+      case '/logs':
+        if (request.method !== 'GET') {
+          return new Response('Method Not Allowed', {
+            status: 405,
+            headers: { 'allow': 'GET' }
+          });
+        }
 
-    return new Response("AI Agent Active", { status: 200 });
+        if (!env?.AGENT_DB) {
+          return Response.json(
+            { error: 'D1 database binding missing' },
+            { status: 500 }
+          );
+        }
+
+        try {
+          const { results } = await env.AGENT_DB.prepare(
+            `SELECT id, type, topic, output, created_at
+             FROM task_log
+             ORDER BY created_at DESC
+             LIMIT 50`
+          ).all();
+
+          return Response.json(results ?? []);
+        } catch (error) {
+          return Response.json({ error: error.message }, { status: 500 });
+        }
+      default:
+        return new Response('AI Agent Active', { status: 200 });
+    }
   }
 };

@@ -1,3 +1,8 @@
+import { logTask } from './logger.js';
+
 export async function scribe(topic, env) {
-  return new Response(`Generating content for ${topic}...`, { status: 200 });
+  const safeTopic = topic ?? 'general topic';
+  const output = `Generating content for ${safeTopic}...`;
+  await logTask(env, 'generate', safeTopic, output);
+  return new Response(output, { status: 200 });
 }
