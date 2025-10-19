@@ -1,24 +1,16 @@
-{
-  "agent": {
-    "name": "Dashboard Builder",
-    "description": "Automates Codex runs for the AI Agent Starter repo.",
-    "defaults": {
-      "repo": "https://github.com/asiakay/ai-agent-starter.git",
-      "branch": "main"
-    }
-  },
-  "tasks": {
-    "generate_dashboard_ui": {
-      "description": "Create or update the dashboard page to surface recent D1 logs.",
-      "instruction": "Add a dashboard page that surfaces recent D1 log entries, including pagination-ready data fetching from the existing /logs endpoint and a responsive layout for desktop and mobile."
-    },
-    "update_routes": {
-      "description": "Ensure worker routes support the dashboard view.",
-      "instruction": "Review the worker routes to expose any endpoints required by the dashboard UI, keeping the API surface consistent with the README."
-    },
-    "test_deployment": {
-      "description": "Dry run a deployment task to validate the workflow.",
-      "instruction": "Run the Codex agent linting and build commands necessary to validate deployment readiness."
-    }
-  }
-}
+agent:
+  name: "Dashboard Builder"
+  description: "Automates Codex runs for the AI Agent Starter repo."
+  defaults:
+    repo: "https://github.com/asiakay/ai-agent-starter.git"
+    branch: "main"
+tasks:
+  generate_dashboard_ui:
+    description: "Create or update the dashboard page to surface recent D1 logs."
+    instruction: "Add a dashboard page that surfaces recent D1 log entries, including pagination-ready data fetching from the existing /logs endpoint and a responsive layout for desktop and mobile."
+  update_routes:
+    description: "Ensure worker routes support the dashboard view."
+    instruction: "Review the worker routes to expose any endpoints required by the dashboard UI, keeping the API surface consistent with the README."
+  test_deployment:
+    description: "Dry run a deployment task to validate the workflow."
+    instruction: "Run the Codex agent linting and build commands necessary to validate deployment readiness."

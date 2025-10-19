@@ -24,15 +24,63 @@ function findConfig(baseDir = process.cwd()) {
   return null;
 }
 
+function tryParseJSON(raw) {
+  try {
+    return JSON.parse(raw);
+  } catch (error) {
+    return null;
+  }
+}
+
+function parseSimpleYaml(raw) {
+  const lines = raw.replace(/\r/g, '').split('\n');
+  const root = {};
+  const stack = [{ indent: -1, container: root }];
+
+  lines.forEach((line) => {
+    if (!line.trim() || line.trim().startsWith('#')) {
+      return;
+    }
+
+    const indent = line.match(/^\s*/)[0].length;
+    const trimmed = line.trim();
+
+    while (stack.length > 1 && indent <= stack[stack.length - 1].indent) {
+      stack.pop();
+    }
+
+    const frame = stack[stack.length - 1];
+    const separatorIndex = trimmed.indexOf(':');
+    if (separatorIndex === -1) {
+      throw new Error(`Unable to parse line: "${trimmed}"`);
+    }
+
+    const key = trimmed.slice(0, separatorIndex).trim();
+    const rawValue = trimmed.slice(separatorIndex + 1).trim();
+
+    if (!rawValue) {
+      const child = {};
+      frame.container[key] = child;
+      stack.push({ indent, container: child });
+      return;
+    }
+
+    let value = rawValue;
+    if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+      value = value.slice(1, -1);
+    }
+    frame.container[key] = value;
+  });
+
+  return root;
+}
+
 function loadConfig(configPath) {
   const raw = fs.readFileSync(configPath, 'utf8');
-  let parsed;
-  try {
-    parsed = JSON.parse(raw);
-  } catch (error) {
-    throw new Error(`Invalid JSON in ${path.basename(configPath)}: ${error.message}`);
-  }
-  if (!parsed || typeof parsed !== 'object') {
+  const fromJson = tryParseJSON(raw);
+  const parsed = fromJson || parseSimpleYaml(raw);
+
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
     throw new Error('Invalid codex-agent config: expected an object at the root.');
   }
   return parsed;
