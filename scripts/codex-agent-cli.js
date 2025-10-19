@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const { execSync } = require('child_process');
+const path = require('path');
 
 const DEFAULT_BRANCH = 'main';
 
@@ -62,9 +63,19 @@ function formatCommandSequence(commands) {
 }
 
 function runCommands(commands) {
+  let currentCwd = process.cwd();
+
   commands.forEach((command) => {
     console.log(`\n▶ ${command}`);
-    execSync(command, { stdio: 'inherit', shell: true });
+
+    const cdMatch = command.match(/^\s*cd\s+(.+)$/);
+    if (cdMatch) {
+      const target = cdMatch[1].trim();
+      currentCwd = path.resolve(currentCwd, target);
+      return;
+    }
+
+    execSync(command, { stdio: 'inherit', shell: true, cwd: currentCwd });
   });
 }
 
