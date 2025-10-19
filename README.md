@@ -18,3 +18,59 @@ npx wrangler dev
 ```bash
 npx wrangler publish
 ```
+
+### Codex Agent API
+
+The Worker now exposes a `/api/codex-agent` endpoint that coordinates Codex-driven
+repository updates.
+
+- `GET /api/codex-agent` returns metadata and available helper routes.
+- `POST /api/codex-agent` accepts a JSON payload with an `instruction` string and
+  optional `repoUrl`, `branch`, and `dryRun` flag. When `dryRun` is `true` the
+  Worker responds with the generated shell script without contacting GitHub.
+- For live runs the Worker forwards the request to the GitHub repository by
+  invoking the `repository_dispatch` API with the `codex-agent-run` event.
+
+Set the following bindings in your Wrangler configuration to enable dispatching
+Codex jobs:
+
+| Variable | Purpose |
+| --- | --- |
+| `GITHUB_TOKEN` | GitHub personal access token with `repo` scope. |
+| `GITHUB_OWNER` | Repository owner/organization (e.g. `asiakay`). |
+| `GITHUB_REPO_NAME` | Repository name (e.g. `ai-agent-starter`). |
+| `GITHUB_REPO` | Optional full clone URL used when `repoUrl` is not supplied. |
+
+Combine this with a GitHub Action that triggers on the `codex-agent-run`
+dispatch event to run the shell script using your preferred execution
+environment.
+
+### Codex Agent Task Runner
+
+Codex runbooks live in `codex-agent.yaml`. The repo ships with a starter
+configuration that includes the dashboard tasks discussed in the project brief.
+
+List the available tasks:
+
+```bash
+npx codex list
+```
+
+Run a predefined instruction (this mirrors the worker + GitHub workflow):
+
+```bash
+npx codex run generate_dashboard_ui
+```
+
+- Override the target repository with `--repo` or branch with `--branch`.
+- Add `--execute` to perform the git commands locally; omit it to just print the
+  generated script.
+- Use `--instruction "..."` to temporarily replace the text from
+  `codex-agent.yaml`.
+
+The previous ad-hoc helper is still available when you want to provide a custom
+instruction without editing the YAML file:
+
+```bash
+npm run codex-agent -- --instruction "Add a dashboard page to display logs" --repo https://github.com/asiakay/ai-agent-starter.git
+```
