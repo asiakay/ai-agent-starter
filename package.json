@@ -8,9 +8,7 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler publish",
-    "test": "echo 'No automated tests configured.'",
-    "codex": "node scripts/codex.js",
-    "codex-agent": "node scripts/codex-agent-cli.js"
+    "test": "echo 'No automated tests configured.'"
   },
   "dependencies": {}
 }
