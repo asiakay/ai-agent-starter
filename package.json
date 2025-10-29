@@ -2,6 +2,9 @@
   "name": "ai-agent",
   "version": "1.0.0",
   "main": "worker/index.js",
+  "bin": {
+    "codex": "./scripts/codex.js"
+  },
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler publish",
